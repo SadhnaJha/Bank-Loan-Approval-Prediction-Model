@@ -1,0 +1,30 @@
+import pandas as pd
+from sklearn.metrics import confusion_matrix
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+
+
+
+# Load dataset
+df = pd.read_csv("loan.csv")
+
+# Clean categorical data
+le = LabelEncoder()
+for c in ["Gender","Married","Loan_Status"]:
+    df[c] = le.fit_transform(df[c])
+
+X = df.drop("Loan_Status", axis=1)
+y = df["Loan_Status"]
+
+# Train model
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+model = RandomForestClassifier()
+model.fit(X_train, y_train)
+
+# Confusion Matrix
+pred = model.predict(X_test)
+print(confusion_matrix(y_test, pred))
+
+# Loan Prediction
+print(model.predict([X_test.iloc[0]]))
