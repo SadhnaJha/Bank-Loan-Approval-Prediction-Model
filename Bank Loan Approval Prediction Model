@@ -11,7 +11,7 @@ df = pd.read_csv("loan.csv")
 df = df.drop("Loan_ID", axis=1, errors="ignore")
 
 # Fill missing values
-df = df.fillna(method="ffill")
+df = df.ffill()
 
 # Convert text columns to numbers
 le = LabelEncoder()
